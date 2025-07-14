@@ -1,6 +1,6 @@
 import { config } from "dotenv";
 import ip from "ip";
-config({ path: `.env.${process.env.NODE_ENV || "development"}.local` });
+config();
 
 export const CREDENTIALS = process.env.CREDENTIALS === "true";
 export const IP = ip.address(`public`, `ipv4`);

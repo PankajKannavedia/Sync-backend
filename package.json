@@ -5,8 +5,8 @@
   "main": "dist/app.js",
   "scripts": {
     "build": "tsc",
-    "start": "npm run build && node dist/app.js",
-    "dev": "cross-env NODE_ENV=development nodemon",
+    "start": "node dist/app.js",
+    "dev": "cross-env NODE_ENV=development nodemon src/app.ts",
     "lint": "eslint --ignore-path .gitignore --ext .ts src/",
     "lint:fix": "npm run lint -- --fix",
     "schema-codegen": "schema-codegen src/rooms/schema/RoomState.ts --ts --output ./generated/"
