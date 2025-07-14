@@ -1,12 +1,12 @@
 import cors from "cors";
 import express from "express";
 import { connect, set } from "mongoose";
-import { NODE_ENV, PORT_HTTP, ORIGIN, CREDENTIALS } from "@/config";
-import { dbConnection } from "@/databases";
-import { Routes } from "@/interfaces/routes.interface";
-import { logger } from "@/utils/logger";
-import { listen } from "@colyseus/arena";
+import { NODE_ENV, PORT_HTTP, ORIGIN, CREDENTIALS } from "./config";
+import { dbConnection } from "./databases";
+import { Routes } from "./interfaces/routes.interface";
 import arenaConfig from "./arena.config";
+import { logger } from "./utils/logger";
+import { listen } from "@colyseus/arena";
 import { monitor } from "@colyseus/monitor";
 import http from "http";
 

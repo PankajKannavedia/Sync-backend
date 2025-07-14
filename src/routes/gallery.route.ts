@@ -1,22 +1,21 @@
 import GalleryController from "../controllers/gallery.controller";
 import { Router } from "express";
-import multer from 'multer';
-import { createDirectoryIfNotExists } from '@/utils/util';
-import path from 'path';
+import multer from "multer";
+import { createDirectoryIfNotExists } from "../utils/util";
+import path from "path";
 import BaseRoute from "./base.route";
-
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     let storePath = path.join(__dirname, `../asset_3d/gallery`);
 
-    const isGlb = file.originalname.endsWith('.glb');
+    const isGlb = file.originalname.endsWith(".glb");
 
     if (isGlb) {
       //@ts-ignore
       file.isGlb = true;
-    }else{
-      return
+    } else {
+      return;
     }
 
     createDirectoryIfNotExists(storePath);
@@ -24,12 +23,12 @@ const storage = multer.diskStorage({
     cb(null, storePath);
   },
   filename: (req, file, cb) => {
-    const lastIndex = file.originalname.lastIndexOf('.');
+    const lastIndex = file.originalname.lastIndexOf(".");
     const fileName = file.originalname.slice(0, lastIndex);
     const extension = file.originalname.slice(lastIndex + 1);
     const finalFileName = `${fileName}.${extension}`;
     console.log(finalFileName);
-    cb(null,finalFileName, fileName);
+    cb(null, finalFileName, fileName);
   },
 });
 
@@ -46,9 +45,16 @@ class GalleryRoute extends BaseRoute {
   }
 
   initializeRoutes() {
-    this.router.post(`${this.path}`,upload.array('glbFiles', 10), this.galleryController.createModel);
+    this.router.post(
+      `${this.path}`,
+      upload.array("glbFiles", 10),
+      this.galleryController.createModel
+    );
     this.router.get(`${this.path}`, this.galleryController.getAllFiles);
-    this.router.get(`${this.path}/:subjectName`, this.galleryController.fileByName);
+    this.router.get(
+      `${this.path}/:subjectName`,
+      this.galleryController.fileByName
+    );
   }
 }
 

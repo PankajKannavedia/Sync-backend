@@ -1,5 +1,5 @@
 import { monitor } from "@colyseus/monitor";
-import { HoloRoom } from "@/rooms/HoloRoom";
+import { HoloRoom } from "./rooms/HoloRoom";
 import Arena from "@colyseus/arena";
 import express from "express";
 

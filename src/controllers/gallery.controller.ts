@@ -1,12 +1,11 @@
-import GalleryService from "@/services/gallery.service";
-import { logger } from "@/utils/logger";
+import GalleryService from "../services/gallery.service";
+import { logger } from "../utils/logger";
 import { NextFunction, Request, Response } from "express";
 import path from "path";
-import { HttpException } from "@/exceptions/HttpException";
 
 class GalleryController {
   service = new GalleryService();
- public getAllFiles = async (
+  public getAllFiles = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -50,12 +49,11 @@ class GalleryController {
   };
 
   public createModel = async (req, res, next) => {
-      try {
-        const responseData = await this.service.postAsset(req, res, next );
-      } catch (error) {
-        next(error);
-      }
-  
+    try {
+      const responseData = await this.service.postAsset(req, res, next);
+    } catch (error) {
+      next(error);
+    }
   };
 }
 

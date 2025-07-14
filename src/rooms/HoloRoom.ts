@@ -1,6 +1,6 @@
-import { Room,Client } from "colyseus";
+import { Room, Client } from "colyseus";
 import { NetworkedEntityState, RoomState } from "./schema/RoomState";
-import { logger } from "@/utils/logger";
+import { logger } from "../utils/logger";
 import { randomUUID } from "crypto";
 
 export class HoloRoom extends Room<RoomState> {
@@ -94,12 +94,16 @@ export class HoloRoom extends Room<RoomState> {
           this.state.selectedIndex.toString()
         );
       }
-      this.broadcast("streamModel", {
-        url: this.state.modelURL,
-        id: loadedModel.id,
-        index: selectedModelData.index,
-        modelName: selectedModelData.subjectName,
-      }, {except: client});
+      this.broadcast(
+        "streamModel",
+        {
+          url: this.state.modelURL,
+          id: loadedModel.id,
+          index: selectedModelData.index,
+          modelName: selectedModelData.subjectName,
+        },
+        { except: client }
+      );
     });
 
     /**
@@ -134,9 +138,12 @@ export class HoloRoom extends Room<RoomState> {
       if (this.state.networkedUserGazes.has(client.id) == false) return;
       this.onEntityGazeUpdate(client.id, entityGazeData);
     });
-    this.onMessage("currrentManipulator", (client , currrentManipulatorID : string) => {
-      this.state.currrentManipulatorID = currrentManipulatorID;
-    });
+    this.onMessage(
+      "currrentManipulator",
+      (client, currrentManipulatorID: string) => {
+        this.state.currrentManipulatorID = currrentManipulatorID;
+      }
+    );
 
     this.onMessage("shareGaze", (client, gazeData) => {
       if (this.state.networkedUserGazes.has(gazeData.userId) === true) return;

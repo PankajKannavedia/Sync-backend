@@ -1,5 +1,5 @@
-import { Vector3 } from "@/utils/Vectors";
-import {  MapSchema, Schema, type } from "@colyseus/schema";
+import { Vector3 } from "../../utils/Vectors";
+import { MapSchema, Schema, type } from "@colyseus/schema";
 
 export class NetworkedEntityState extends Schema {
   @type("string") id: string = "ID";
@@ -31,9 +31,9 @@ export class RoomState extends Schema {
   @type("string") modelURL = "";
   @type("string") modelName = "";
   @type("number") serverTime: number = 0.0;
-  
+
   @type("boolean") mrMode = false;
-  
+
   @type("int32") selectedIndex = -1;
   @type("string") currrentManipulatorID = "";
 

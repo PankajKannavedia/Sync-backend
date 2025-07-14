@@ -1,6 +1,6 @@
-import { HttpException } from "@/exceptions/HttpException";
-import { isEmpty } from "@/utils/util";
-import ServiceInterface from "@/interfaces/service.interface";
+import { HttpException } from "../exceptions/HttpException";
+import { isEmpty } from "../utils/util";
+import ServiceInterface from "../interfaces/service.interface";
 
 class BaseService implements ServiceInterface {
   public model: any;

@@ -1,7 +1,7 @@
-import GalleryModel from "@/models/gallery.model";
+import GalleryModel from "../models/gallery.model";
 import BaseService from "./base.service";
-import { HttpException } from "@/exceptions/HttpException";
-import { getFileHash } from "@/utils/util";
+import { HttpException } from "../exceptions/HttpException";
+import { getFileHash } from "../utils/util";
 
 class GalleryService extends BaseService {
   public model = GalleryModel;

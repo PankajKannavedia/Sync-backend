@@ -1,7 +1,7 @@
 import { join } from "path";
 import winston from "winston";
 import winstonDaily from "winston-daily-rotate-file";
-import { LOG_DIR } from "@/config";
+import { LOG_DIR } from "../config";
 import { createDirectoryIfNotExists } from "./util";
 
 // logs dir
