@@ -8,10 +8,15 @@ export default Arena({
   getId: () => "HoloCollab",
 
   initializeGameServer: (gameServer) => {
-    /**
-     * Define your room handlers:
-     */
+    /** Define your room handlers: */
     gameServer.define("lobby_room", HoloRoom);
+  },
+
+  /* 👇 Glue for single‑port: Arena will call this and hand us { server } */
+  initializeTransport: ({ server }) => {
+    const { WebSocketTransport } = require("@colyseus/ws-transport");
+    // Colyseus transport shares the *same* http.Server instance
+    return new WebSocketTransport({ server });
   },
 
   initializeExpress: (app) => {

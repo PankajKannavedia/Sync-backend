@@ -4,8 +4,8 @@ import { connect, set } from "mongoose";
 import { ENV } from "./config/index";
 import { dbConnection } from "./databases";
 import { Routes } from "./interfaces/routes.interface";
-import arenaConfig from "./arena.config";
-import { listen as arenaListen } from "@colyseus/arena";
+// import arenaConfig from "./arena.config";
+// import { listen as arenaListen } from "@colyseus/arena";
 import { logger } from "./utils/logger";
 import http from "http";
 
@@ -16,7 +16,7 @@ class App {
 
   constructor(routes: Routes[]) {
     this.app = express();
-    this.env = ENV.NODE_ENV || "development";
+    this.env = ENV.NODE_ENV;
     this.port = ENV.PORT_HTTP || 3000;
 
     this.connectToDatabase();
@@ -24,23 +24,17 @@ class App {
     this.initializeRoutes(routes);
   }
 
-  public listen() {
-    /* ---------- 1. Express on PORT_HTTP ---------- */
+  public async listen() {
+    /* 1️⃣  create ONE http.Server */
     const server = http.createServer(this.app);
+
     server.listen(this.port, () => {
       logger.info(`=================================`);
-      logger.info(`======= ENV: ${this.env} =======`);
-      logger.info(`🚀 App listening on the port ${this.port}`);
+      logger.info(`🌐 API + 🚀 WS listening on ${this.port} (${this.env})`);
       logger.info(`=================================`);
     });
-
-    /* ---------- 2. Colyseus / Arena on PORT_WS ---------- */
-    arenaListen(arenaConfig, ENV.PORT_WS);
-    logger.info(`🎮 WS  listening on ${ENV.PORT_WS}`);
-  }
-
-  public getServer() {
-    return this.app;
+    // arenaListen attaches Colyseus to **the same server**.
+    // arenaListen(arenaConfig);
   }
 
   private async connectToDatabase() {
