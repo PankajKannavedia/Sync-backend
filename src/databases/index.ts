@@ -1,7 +1,7 @@
-import { DB_HOST, DB_PORT, DB_DATABASE, DB_URL } from "../config";
+import { ENV } from "../config/index";
 
-const isLocalDB = DB_HOST === "localhost" || DB_HOST === "127.0.0.1";
+const isLocalDB = ENV.DB_HOST === "localhost" || ENV.DB_HOST === "127.0.0.1";
 
 export const dbConnection = isLocalDB
-  ? `mongodb://${DB_HOST}:${DB_PORT}/${DB_DATABASE}`
-  : DB_URL;
+  ? `mongodb://${ENV.DB_HOST}:${ENV.DB_PORT}/${ENV.DB_DATABASE}`
+  : ENV.DB_URL;

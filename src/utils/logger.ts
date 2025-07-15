@@ -1,11 +1,11 @@
 import { join } from "path";
 import winston from "winston";
 import winstonDaily from "winston-daily-rotate-file";
-import { LOG_DIR } from "../config";
+import { ENV } from "../config/index";
 import { createDirectoryIfNotExists } from "./util";
 
 // logs dir
-const logDir: string = join(__dirname, LOG_DIR);
+const logDir: string = join(__dirname, ENV.LOG_DIR);
 
 createDirectoryIfNotExists(logDir);
 

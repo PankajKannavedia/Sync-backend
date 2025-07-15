@@ -1,13 +1,12 @@
 import cors from "cors";
 import express from "express";
 import { connect, set } from "mongoose";
-import { NODE_ENV, PORT_HTTP, ORIGIN, CREDENTIALS } from "./config";
+import { ENV } from "./config/index";
 import { dbConnection } from "./databases";
 import { Routes } from "./interfaces/routes.interface";
 import arenaConfig from "./arena.config";
+import { listen as arenaListen } from "@colyseus/arena";
 import { logger } from "./utils/logger";
-import { listen } from "@colyseus/arena";
-import { monitor } from "@colyseus/monitor";
 import http from "http";
 
 class App {
@@ -17,17 +16,16 @@ class App {
 
   constructor(routes: Routes[]) {
     this.app = express();
-    this.env = NODE_ENV || "development";
-    this.port = PORT_HTTP || 3000;
+    this.env = ENV.NODE_ENV || "development";
+    this.port = ENV.PORT_HTTP || 3000;
 
     this.connectToDatabase();
     this.initializeMiddlewares();
     this.initializeRoutes(routes);
-    this.colyseusListen();
-    this.colyseusMonitor();
   }
 
   public listen() {
+    /* ---------- 1. Express on PORT_HTTP ---------- */
     const server = http.createServer(this.app);
     server.listen(this.port, () => {
       logger.info(`=================================`);
@@ -35,18 +33,14 @@ class App {
       logger.info(`🚀 App listening on the port ${this.port}`);
       logger.info(`=================================`);
     });
+
+    /* ---------- 2. Colyseus / Arena on PORT_WS ---------- */
+    arenaListen(arenaConfig, ENV.PORT_WS);
+    logger.info(`🎮 WS  listening on ${ENV.PORT_WS}`);
   }
 
   public getServer() {
     return this.app;
-  }
-
-  private colyseusMonitor() {
-    this.app.use("/colyseus", monitor());
-  }
-
-  private colyseusListen() {
-    listen(arenaConfig);
   }
 
   private async connectToDatabase() {
@@ -64,7 +58,9 @@ class App {
   }
 
   private initializeMiddlewares() {
-    const whitelist = ORIGIN ? ORIGIN.split(",").map((o) => o.trim()) : [];
+    const whitelist = ENV.ORIGIN
+      ? ENV.ORIGIN.split(",").map((o) => o.trim())
+      : [];
 
     this.app.use(
       cors({
@@ -78,7 +74,7 @@ class App {
             ? callback(null, true)
             : callback(new Error("Not allowed by CORS"));
         },
-        credentials: CREDENTIALS,
+        credentials: ENV.CREDENTIALS,
       })
     );
 
