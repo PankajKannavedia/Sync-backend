@@ -2,6 +2,7 @@ import { monitor } from "@colyseus/monitor";
 import { HoloRoom } from "./rooms/HoloRoom";
 import Arena from "@colyseus/arena";
 import express from "express";
+import { PORT } from "config";
 
 export default Arena({
   getId: () => "HoloCollab",
@@ -10,7 +11,6 @@ export default Arena({
     /**
      * Define your room handlers:
      */
-    gameServer.attach({});
     gameServer.define("lobby_room", HoloRoom);
   },
 
@@ -31,5 +31,6 @@ export default Arena({
     /**
      * Before before gameServer.listen() is called.
      */
+    console.log(`Server will listen on ${PORT}`);
   },
 });
