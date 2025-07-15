@@ -6,8 +6,7 @@ export const IP = ip.address(`public`, `ipv4`);
 
 export const ENV = {
   NODE_ENV: process.env.NODE_ENV || "development",
-  PORT_WS: Number(process.env.PORT || 3001),
-  PORT_HTTP: Number(process.env.PORT_HTTP || 3000),
+  PORT: Number(process.env.PORT_HTTP || 3000),
   DB_USER: process.env.DB_USER || "",
   DB_PASS: process.env.DB_PASS || "",
   DB_HOST: process.env.DB_HOST || "localhost",

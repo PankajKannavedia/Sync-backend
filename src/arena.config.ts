@@ -36,6 +36,6 @@ export default Arena({
     /**
      * Before before gameServer.listen() is called.
      */
-    console.log(`Server will listen on ${ENV.PORT_HTTP}`);
+    console.log(`Server will listen on ${ENV.PORT}`);
   },
 });
