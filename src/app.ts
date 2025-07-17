@@ -4,13 +4,12 @@ import { connect, set } from "mongoose";
 import { ENV } from "./config/index";
 import { dbConnection } from "./databases";
 import { Routes } from "./interfaces/routes.interface";
-import Arena, { getTransport } from "@colyseus/arena";
 import arenaConfig from "./arena.config";
 import { Server } from "@colyseus/core";
 import { WebSocketTransport } from "@colyseus/ws-transport";
-import { listen as arenaListen } from "@colyseus/arena";
 import { logger } from "./utils/logger";
 import http from "http";
+import { matchMaker } from "@colyseus/core";
 
 class App {
   private readonly app = express();
@@ -28,7 +27,7 @@ class App {
     const server = http.createServer(this.app);
 
     /* 2️⃣ setup Colyseus transport using the SAME server */
-    const transport = new WebSocketTransport({ server });
+    const transport = new WebSocketTransport({ server: server });
 
     /* 3️⃣ build Colyseus GameServer from Arena config */
     const gameServer = new Server({ transport });
@@ -84,6 +83,11 @@ class App {
   private initializeRoutes(routes: Routes[]) {
     routes.forEach((route) => {
       this.app.use("/", route.router);
+    });
+
+    this.app.get("/matchmake/lobby_room", async (req, res) => {
+      const rooms = await matchMaker.query({ name: "lobby_room" });
+      res.json(rooms);
     });
   }
 }

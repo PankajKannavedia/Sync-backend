@@ -1,25 +1,20 @@
 import { monitor } from "@colyseus/monitor";
 import { HoloRoom } from "./rooms/HoloRoom";
-import Arena from "@colyseus/arena";
 import express from "express";
 import { ENV } from "config/index";
+import { Server } from "@colyseus/core";
+import { Express } from "express";
 
-export default Arena({
+// Define the config object that mimics Arena's structure
+const arenaConfig = {
   getId: () => "HoloCollab",
 
-  initializeGameServer: (gameServer) => {
+  initializeGameServer: (gameServer: Server) => {
     /** Define your room handlers: */
     gameServer.define("lobby_room", HoloRoom);
   },
 
-  /* 👇 Glue for single‑port: Arena will call this and hand us { server } */
-  initializeTransport: ({ server }) => {
-    const { WebSocketTransport } = require("@colyseus/ws-transport");
-    // Colyseus transport shares the *same* http.Server instance
-    return new WebSocketTransport({ server });
-  },
-
-  initializeExpress: (app) => {
+  initializeExpress: (app: Express) => {
     // Body parser - reads data from request body into json object
     app.use(express.json());
     app.use(express.urlencoded({ extended: true, limit: "10kb" }));
@@ -38,4 +33,6 @@ export default Arena({
      */
     console.log(`Server will listen on ${ENV.PORT}`);
   },
-});
+};
+
+export default arenaConfig;
